@@ -1,0 +1,77 @@
+# Archivos a ignorar en Git para proyecto Roblox RPG
+
+# Archivos de Roblox Studio
+*.rbxlx
+*.rbxl
+*.rbxlx.lock
+*.rbxl.lock
+
+# Archivos de Rojo
+*.rbxlx
+*.rbxl
+.project.json
+.project.json.lock
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Archivos de configuración del IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Archivos del sistema operativo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Archivos temporales
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Archivos de backup
+*.bak
+*.backup
+*.old
+
+# Archivos de desarrollo local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos de testing
+coverage/
+.nyc_output/
+test-results/
+
+# Archivos de build
+dist/
+build/
+out/
+
+# Archivos de documentación generada
+docs/_build/
+site/
+
+# Archivos específicos de Roblox
+GameSettings.json
+ClientAppSettings.json
+
+# Archivos específicos del proyecto
+test.html

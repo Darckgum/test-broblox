@@ -1,0 +1,78 @@
+{
+  "name": "roblox-rpg-project",
+  "version": "1.0.0",
+  "description": "Un sistema RPG completo y profesional para Roblox Studio desarrollado con Rojo",
+  "main": "default.project.json",
+  "scripts": {
+    "serve": "rojo serve",
+    "build": "rojo build --output game.rbxlx",
+    "sync": "rojo serve --port 34872",
+    "dev": "rojo serve --port 34872 --watch",
+    "test": "echo \"No tests specified\" && exit 0",
+    "lint": "selene src/",
+    "format": "stylua src/"
+  },
+  "keywords": [
+    "roblox",
+    "rpg",
+    "game",
+    "lua",
+    "rojo",
+    "role-playing",
+    "adventure",
+    "mmorpg"
+  ],
+  "author": {
+    "name": "Tu Nombre",
+    "email": "tu@email.com",
+    "url": "https://github.com/tuusuario"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tuusuario/roblox-rpg-project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tuusuario/roblox-rpg-project/issues"
+  },
+  "homepage": "https://github.com/tuusuario/roblox-rpg-project#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@rojo/cli": "^7.3.0",
+    "selene": "^0.25.0",
+    "stylua": "^0.18.0"
+  },
+  "dependencies": {},
+  "rojo": {
+    "version": "7.3.0"
+  },
+  "files": [
+    "src/",
+    "default.project.json",
+    "README.md",
+    "INSTALACION.md",
+    "ESTRUCTURA.md"
+  ],
+  "directories": {
+    "src": "Código fuente del proyecto",
+    "docs": "Documentación adicional"
+  },
+  "config": {
+    "rojo": {
+      "port": 34872,
+      "address": "localhost"
+    }
+  },
+  "contributors": [
+    {
+      "name": "Tu Nombre",
+      "email": "tu@email.com"
+    }
+  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/tuusuario"
+  }
+}
