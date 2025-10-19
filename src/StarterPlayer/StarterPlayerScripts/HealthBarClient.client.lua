@@ -1,4 +1,4 @@
--- Barra de Vida Mejorada - Esquina Izquierda
+-- Barra de Vida Mejorada - Con Debug y Corrección de Actualización
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 
@@ -9,6 +9,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 local healthBarGui = nil
 local healthFrame = nil
 local healthText = nil
+local lastHealth = 100 -- Variable para detectar cambios
 
 -- Función para crear la GUI de la barra de vida
 local function createHealthBarGUI()
@@ -31,21 +32,6 @@ local function createHealthBarGUI()
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 6) -- Esquinas más redondeadas
     corner.Parent = mainFrame
-    
-    -- Sombra del frame
-    local shadowFrame = Instance.new("Frame")
-    shadowFrame.Name = "ShadowFrame"
-    shadowFrame.Size = UDim2.new(1, 3, 1, 3)
-    shadowFrame.Position = UDim2.new(0, -1.5, 0, -1.5)
-    shadowFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    shadowFrame.BackgroundTransparency = 0.6
-    shadowFrame.BorderSizePixel = 0
-    shadowFrame.ZIndex = mainFrame.ZIndex - 1
-    shadowFrame.Parent = healthBarGui
-    
-    local shadowCorner = Instance.new("UICorner")
-    shadowCorner.CornerRadius = UDim.new(0, 6)
-    shadowCorner.Parent = shadowFrame
     
     -- Frame de fondo de la barra
     local backgroundFrame = Instance.new("Frame")
@@ -72,20 +58,6 @@ local function createHealthBarGUI()
     local healthCorner = Instance.new("UICorner")
     healthCorner.CornerRadius = UDim.new(0, 3)
     healthCorner.Parent = healthFrame
-    
-    -- Efecto de brillo en la barra
-    local glowFrame = Instance.new("Frame")
-    glowFrame.Name = "GlowFrame"
-    glowFrame.Size = UDim2.new(1, 0, 0.3, 0)
-    glowFrame.Position = UDim2.new(0, 0, 0, 0)
-    glowFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    glowFrame.BackgroundTransparency = 0.7
-    glowFrame.BorderSizePixel = 0
-    glowFrame.Parent = healthFrame
-    
-    local glowCorner = Instance.new("UICorner")
-    glowCorner.CornerRadius = UDim.new(0, 3)
-    glowCorner.Parent = glowFrame
     
     -- Texto de la vida (más pequeño)
     healthText = Instance.new("TextLabel")
@@ -118,7 +90,13 @@ end
 
 -- Función para actualizar la barra de vida
 local function updateHealthBar(currentHP, maxHP)
-    if not healthFrame or not healthText then return end
+    if not healthFrame or not healthText then 
+        print("Error: healthFrame o healthText no encontrados")
+        return 
+    end
+    
+    -- Debug: Imprimir valores
+    print("Actualizando barra: " .. currentHP .. "/" .. maxHP)
     
     local healthPercentage = currentHP / maxHP
     
@@ -174,25 +152,46 @@ local function updateHealthBar(currentHP, maxHP)
     else
         healthText.TextColor3 = Color3.fromRGB(255, 255, 255) -- Blanco
     end
+    
+    -- Actualizar última vida conocida
+    lastHealth = currentHP
 end
 
 -- Función para configurar eventos del Humanoid
 local function setupHumanoidEvents(character)
     local humanoid = character:FindFirstChild("Humanoid")
-    if not humanoid then return end
+    if not humanoid then 
+        print("Error: Humanoid no encontrado en el personaje")
+        return 
+    end
+    
+    print("Configurando eventos del Humanoid - Vida inicial: " .. humanoid.Health .. "/" .. humanoid.MaxHealth)
     
     -- Actualizar barra cuando cambia la vida
     humanoid.HealthChanged:Connect(function(health)
+        print("HealthChanged detectado: " .. health .. "/" .. humanoid.MaxHealth)
         updateHealthBar(health, humanoid.MaxHealth)
     end)
     
     -- Actualizar vida máxima cuando cambia
     humanoid:GetPropertyChangedSignal("MaxHealth"):Connect(function()
+        print("MaxHealth cambió: " .. humanoid.Health .. "/" .. humanoid.MaxHealth)
         updateHealthBar(humanoid.Health, humanoid.MaxHealth)
     end)
     
     -- Actualizar al inicio
     updateHealthBar(humanoid.Health, humanoid.MaxHealth)
+    
+    -- Loop de verificación adicional (por si falla HealthChanged)
+    spawn(function()
+        while character.Parent and humanoid.Parent do
+            wait(0.1) -- Verificar cada 0.1 segundos
+            if humanoid.Health ~= lastHealth then
+                print("Cambio detectado por loop: " .. humanoid.Health .. "/" .. humanoid.MaxHealth)
+                updateHealthBar(humanoid.Health, humanoid.MaxHealth)
+            end
+        end
+    end)
 end
 
 -- Función para configurar eventos del jugador
@@ -202,12 +201,13 @@ local function setupPlayerEvents()
     
     -- Configurar para el personaje actual
     if player.Character then
+        wait(1) -- Esperar un poco más
         setupHumanoidEvents(player.Character)
     end
     
     -- Configurar para nuevos personajes
     player.CharacterAdded:Connect(function(character)
-        wait(1) -- Esperar a que el personaje se cargue completamente
+        wait(2) -- Esperar más tiempo para que el personaje se cargue completamente
         setupHumanoidEvents(character)
     end)
 end
@@ -215,4 +215,4 @@ end
 -- Inicializar
 setupPlayerEvents()
 
-print("HealthBarClient: Barra de vida mejorada iniciada")
+print("HealthBarClient: Barra de vida mejorada iniciada con debug")
