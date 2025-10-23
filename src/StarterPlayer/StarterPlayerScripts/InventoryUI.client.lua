@@ -76,7 +76,6 @@ local function createMainScreenGui()
 	screenGui.Name = "ModernInventoryGui"
 	screenGui.ResetOnSpawn = false
 	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	screenGui.DisplayOrder = 10  -- Encima de las barras de vida/estamina
 	screenGui.Parent = playerGui
 	
 	return screenGui
