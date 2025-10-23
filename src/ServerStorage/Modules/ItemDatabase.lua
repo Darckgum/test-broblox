@@ -1,171 +1,200 @@
--- Base de datos de items del RPG
+-- ItemDatabase.lua
+-- Base de datos de todos los items del juego
+
 local ItemDatabase = {}
 
--- Colores de raridad
-ItemDatabase.RarityColors = {
+-- Colores de rareza
+local RARITY_COLORS = {
     Common = Color3.fromRGB(150, 150, 150),    -- Gris
-    Rare = Color3.fromRGB(0, 112, 221),        -- Azul
-    Epic = Color3.fromRGB(163, 53, 238),       -- Morado
-    Legendary = Color3.fromRGB(255, 128, 0)    -- Dorado/Naranja
+    Uncommon = Color3.fromRGB(0, 255, 0),      -- Verde
+    Rare = Color3.fromRGB(0, 100, 255),        -- Azul
+    Epic = Color3.fromRGB(150, 0, 255),        -- Morado
+    Legendary = Color3.fromRGB(255, 215, 0)    -- Dorado
 }
 
 -- Categorías de items
-ItemDatabase.Categories = {
-    Weapon = "Weapon",
-    Consumable = "Consumable",
-    Miscellaneous = "Miscellaneous"
+local CATEGORIES = {
+    "Materials",
+    "Weapons", 
+    "Consumables",
+    "Tools",
+    "Equipment"
 }
 
 -- Base de datos de items
-ItemDatabase.Items = {
-    -- ARMAS
-    ["branch"] = {
-        id = "branch",
-        name = "Rama",
-        description = "Una simple rama. Mejor que nada.",
-        category = "Weapon",
-        rarity = "Common",
-        stackable = false,
-        maxStack = 1,
-        icon = "🌿", -- Emoji temporal, puedes reemplazar con ID de imagen
-        -- Stats de arma
-        damage = 5,
-        attackSpeed = 1.0,
-        weaponType = "Melee"
-    },
-    
-    ["wooden_sword"] = {
-        id = "wooden_sword",
-        name = "Espada de Madera",
-        description = "Una espada simple hecha de madera. Sorprendentemente efectiva.",
-        category = "Weapon",
-        rarity = "Rare",
-        stackable = false,
-        maxStack = 1,
-        icon = "⚔️",
-        -- Stats de arma
-        damage = 10,
-        attackSpeed = 1.2,
-        weaponType = "Melee"
-    },
-    
-    ["iron_sword"] = {
-        id = "iron_sword",
-        name = "Espada de Hierro",
-        description = "Una espada forjada en hierro. Causa daño considerable.",
-        category = "Weapon",
-        rarity = "Epic",
-        stackable = false,
-        maxStack = 1,
-        icon = "🗡️",
-        -- Stats de arma
-        damage = 20,
-        attackSpeed = 1.3,
-        weaponType = "Melee"
-    },
-    
-    -- CONSUMIBLES
-    ["small_health_potion"] = {
-        id = "small_health_potion",
-        name = "Poción Pequeña de Vida",
-        description = "Restaura 20 puntos de vida.",
-        category = "Consumable",
-        rarity = "Common",
-        stackable = true,
-        maxStack = 10,
-        icon = "🧪",
-        -- Efecto
-        effectType = "heal",
-        effectValue = 20
-    },
-    
-    ["medium_health_potion"] = {
-        id = "medium_health_potion",
-        name = "Poción Mediana de Vida",
-        description = "Restaura 50 puntos de vida.",
-        category = "Consumable",
-        rarity = "Rare",
-        stackable = true,
-        maxStack = 10,
-        icon = "🧪",
-        -- Efecto
-        effectType = "heal",
-        effectValue = 50
-    },
-    
-    ["large_health_potion"] = {
-        id = "large_health_potion",
-        name = "Poción Grande de Vida",
-        description = "Restaura 100 puntos de vida.",
-        category = "Consumable",
-        rarity = "Epic",
-        stackable = true,
-        maxStack = 10,
-        icon = "🧪",
-        -- Efecto
-        effectType = "heal",
-        effectValue = 100
-    },
-    
-    -- MISCELÁNEOS
-    ["gold_coin"] = {
-        id = "gold_coin",
-        name = "Moneda de Oro",
-        description = "Moneda de oro. Se usa para comerciar.",
-        category = "Miscellaneous",
+local ITEMS = {
+    -- MATERIALES
+    {
+        id = "wood",
+        name = "Madera",
+        description = "Material básico para crafteo",
+        category = "Materials",
         rarity = "Common",
         stackable = true,
         maxStack = 999,
-        icon = "🪙"
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png"
     },
-    
-    ["wood"] = {
-        id = "wood",
-        name = "Madera",
-        description = "Madera básica. Útil para craftear.",
-        category = "Miscellaneous",
+    {
+        id = "stone",
+        name = "Piedra", 
+        description = "Piedra sólida para construcción",
+        category = "Materials",
         rarity = "Common",
         stackable = true,
-        maxStack = 50,
-        icon = "🪵"
+        maxStack = 999,
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+    },
+    {
+        id = "iron",
+        name = "Hierro",
+        description = "Metal resistente para armas",
+        category = "Materials", 
+        rarity = "Uncommon",
+        stackable = true,
+        maxStack = 999,
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+    },
+    {
+        id = "gold",
+        name = "Oro",
+        description = "Metal precioso y valioso",
+        category = "Materials",
+        rarity = "Rare", 
+        stackable = true,
+        maxStack = 999,
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+    },
+    {
+        id = "crystal",
+        name = "Cristal",
+        description = "Cristal mágico con propiedades especiales",
+        category = "Materials",
+        rarity = "Epic",
+        stackable = true,
+        maxStack = 99,
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png"
     },
     
-    ["iron_ore"] = {
-        id = "iron_ore",
-        name = "Mineral de Hierro",
-        description = "Mineral sin refinar. Se puede fundir.",
-        category = "Miscellaneous",
+    -- ARMAS
+    {
+        id = "wooden_sword",
+        name = "Espada de Madera",
+        description = "Espada básica de madera",
+        category = "Weapons",
+        rarity = "Common",
+        stackable = false,
+        maxStack = 1,
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png",
+        damage = 10
+    },
+    {
+        id = "iron_sword", 
+        name = "Espada de Hierro",
+        description = "Espada resistente de hierro",
+        category = "Weapons",
+        rarity = "Uncommon",
+        stackable = false,
+        maxStack = 1,
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png",
+        damage = 25
+    },
+    {
+        id = "golden_sword",
+        name = "Espada Dorada", 
+        description = "Espada de oro con gran poder",
+        category = "Weapons",
+        rarity = "Rare",
+        stackable = false,
+        maxStack = 1,
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png",
+        damage = 50
+    },
+    {
+        id = "bow",
+        name = "Arco",
+        description = "Arco para atacar a distancia",
+        category = "Weapons",
+        rarity = "Uncommon", 
+        stackable = false,
+        maxStack = 1,
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png",
+        damage = 20
+    },
+    
+    -- CONSUMIBLES
+    {
+        id = "health_potion",
+        name = "Poción de Vida",
+        description = "Restaura 50 puntos de vida",
+        category = "Consumables",
+        rarity = "Common",
+        stackable = true,
+        maxStack = 10,
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png",
+        healAmount = 50
+    },
+    {
+        id = "speed_potion",
+        name = "Poción de Velocidad", 
+        description = "Aumenta la velocidad por 30 segundos",
+        category = "Consumables",
+        rarity = "Uncommon",
+        stackable = true,
+        maxStack = 5,
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png",
+        speedMultiplier = 1.5
+    },
+    {
+        id = "strength_potion",
+        name = "Poción de Fuerza",
+        description = "Aumenta el daño por 60 segundos", 
+        category = "Consumables",
         rarity = "Rare",
         stackable = true,
-        maxStack = 50,
-        icon = "⛏️"
+        maxStack = 3,
+        icon = "rbxasset://textures/ui/GuiImagePlaceholder.png",
+        damageMultiplier = 2.0
     }
 }
 
--- Función para obtener un item por ID
-function ItemDatabase.getItem(itemId)
-    return ItemDatabase.Items[itemId]
+-- Funciones públicas
+function ItemDatabase.getItemById(id)
+    for _, item in ipairs(ITEMS) do
+        if item.id == id then
+            return item
+        end
+    end
+    return nil
 end
 
--- Función para verificar si un item existe
-function ItemDatabase.itemExists(itemId)
-    return ItemDatabase.Items[itemId] ~= nil
+function ItemDatabase.getAllItems()
+    return ITEMS
 end
 
--- Función para obtener el color de una raridad
-function ItemDatabase.getRarityColor(rarity)
-    return ItemDatabase.RarityColors[rarity] or ItemDatabase.RarityColors.Common
-end
-
--- Función para obtener todos los items de una categoría
 function ItemDatabase.getItemsByCategory(category)
     local items = {}
-    for id, item in pairs(ItemDatabase.Items) do
+    for _, item in ipairs(ITEMS) do
         if item.category == category then
             table.insert(items, item)
         end
     end
     return items
+end
+
+function ItemDatabase.getCategories()
+    return CATEGORIES
+end
+
+function ItemDatabase.getRarityColor(rarity)
+    return RARITY_COLORS[rarity] or RARITY_COLORS.Common
+end
+
+function ItemDatabase.getItemRarityColor(itemId)
+    local item = ItemDatabase.getItemById(itemId)
+    if item then
+        return ItemDatabase.getRarityColor(item.rarity)
+    end
+    return RARITY_COLORS.Common
 end
 
 return ItemDatabase
