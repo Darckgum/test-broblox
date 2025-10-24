@@ -113,7 +113,7 @@ UIS.InputBegan:Connect(function(input, gameProcessed)
 	
 	if input.KeyCode == Enum.KeyCode[tecla] then
 		-- Solo correr si se está moviendo y tiene stamina
-		if Humanoid.MoveVector.Magnitude > 0 and stamina > 0 then
+		if Humanoid.MoveDirection.Magnitude > 0 and stamina > 0 then
 			iniciarSprint()
 		end
 	end
@@ -134,7 +134,7 @@ RunService.Heartbeat:Connect(function()
 	local deltaTime = ahora - ultimoTiempo
 	ultimoTiempo = ahora
 	
-	local estaMoviendose = Humanoid.MoveVector.Magnitude > 0
+	local estaMoviendose = Humanoid.MoveDirection.Magnitude > 0
 	
 	if corriendo and estaMoviendose then
 		-- Gastar stamina
